@@ -1,7 +1,7 @@
 import winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
     level: 'info',
     format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
     transports: [
@@ -9,5 +9,3 @@ const logger = winston.createLogger({
         new DailyRotateFile({ filename: 'logs/app-%DATE%.log' }),
     ],
 });
-
-export default logger;

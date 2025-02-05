@@ -2,7 +2,7 @@ import { readFile, access, readdir } from 'fs/promises';
 import { join } from 'path';
 import { StorableSidebar, BookmarkGroup, Bookmark } from './types';
 import { SaveHTMLToFile } from './html';
-import { logger as logger } from './logger';
+import { logger } from './logger';
 
 class JsonFileReader {
     private static validateJson<T>(data: unknown): data is T {
@@ -12,7 +12,7 @@ class JsonFileReader {
     async readJsonFile<T>(filePath: string): Promise<T | null> {
         try {
             const fullPath = join(filePath);
-            logger.log('Reading file:', fullPath);
+            logger.info('Reading file:', fullPath);
             try {
                 await access(fullPath);
             } catch (error) {
@@ -40,9 +40,11 @@ class JsonFileReader {
 }
 
 // Usage
-const fileName = process.argv[2];
+const fileName = process.argv[2] ?? process.env.FILE_NAME;
 if (!fileName) {
-    console.error('Please provide a file name as an argument');
+    console.error(
+        'Please provide a file name as an argument or set the FILE_NAME environment variable',
+    );
     process.exit(1);
 }
 
